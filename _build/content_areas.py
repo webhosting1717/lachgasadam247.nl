@@ -507,6 +507,7 @@ def area_page(slug):
         priority="0.8" if a["kind"] == "stadsdeel" else "0.7",
         changefreq="weekly",
         speakable=["#h1", ".lead"],
+        auto_toc=True,
     )
     lat, lon = a["geo"]
     page["schema"] = [{
@@ -539,7 +540,7 @@ def area_page(slug):
 
     # Intro + wijken
     body.append('<section class="section" aria-labelledby="h-intro"><div class="wrap prose">'
-                '<h2 id="h-intro">Lachgas bezorgen in %s</h2>%s'
+                '<h2 id="h-intro" data-nav="Bezorggebied">Lachgas bezorgen in %s</h2>%s'
                 '<h3>Wijken en gebieden waar wij bezorgen</h3><p class="wijken">%s.</p>'
                 '<p>Staat jouw buurt er niet bij? Stuur je postcode via %s, dan bevestigen we direct of we bij jou kunnen bezorgen.</p>'
                 '</div></section>'
@@ -548,7 +549,7 @@ def area_page(slug):
 
     # Zo bestel je
     body.append('<section class="section alt" aria-labelledby="h-zo"><div class="wrap prose">'
-                '<h2 id="h-zo">Zo bestel je lachgas in %s</h2>'
+                '<h2 id="h-zo" data-nav="Zo bestel je">Zo bestel je lachgas in %s</h2>'
                 '<p>Bestellen gaat zonder webshop, account of formulier. Je regelt alles in één WhatsApp-gesprek of telefoontje.</p>%s'
                 '</div></section>'
                 % (esc(a["name"]), steps([
@@ -560,13 +561,13 @@ def area_page(slug):
 
     # Waar we op letten
     body.append('<section class="section" aria-labelledby="h-letten"><div class="wrap prose">'
-                '<h2 id="h-letten">Bezorgen in %s: waar wij op letten</h2>%s'
+                '<h2 id="h-letten" data-nav="Waar wij op letten">Bezorgen in %s: waar wij op letten</h2>%s'
                 '<h3>%s</h3><p>%s</p></div></section>'
                 % (esc(a["name"]), checks(a["letten"]), esc(a["extra_h"]), a["extra"]))
 
     # Tanks + safety teaser
     body.append('<section class="section alt" aria-labelledby="h-tanks"><div class="wrap prose">'
-                '<h2 id="h-tanks">Lachgas tanks voor %s</h2>'
+                '<h2 id="h-tanks" data-nav="Tanks">Lachgas tanks voor %s</h2>'
                 '<p>Wij leveren lachgas tanks in verschillende maten. Welke maat past, hangt af van je gelegenheid en het aantal mensen. Bekijk het overzicht van <a href="/lachgas-tanks/">lachgas tanks en maten</a> of vraag ons advies via WhatsApp.</p>%s'
                 '<div class="callout"><p><strong>Verantwoord gebruik.</strong> Lachgas is uitsluitend voor volwassenen (18+). Gebruik het nooit voordat je gaat rijden of fietsen en lees onze tips over <a href="/lachgas-informatie/veilig-gebruik/">veilig en verantwoord gebruik</a>.</p></div>'
                 '</div></section>'
@@ -578,7 +579,7 @@ def area_page(slug):
     # Nearby
     near = [(("/bezorggebied/%s/" % n), "Lachgas %s" % AREAS[n]["name"]) for n in a["nearby"]]
     body.append('<section class="section" aria-labelledby="h-nearby"><div class="wrap prose">'
-                '<h2 id="h-nearby">Ook in de buurt van %s</h2>'
+                '<h2 id="h-nearby" data-nav="In de buurt">Ook in de buurt van %s</h2>'
                 '<p>Wij bezorgen in alle stadsdelen van Amsterdam en in de regio. Bekijk de bezorggebieden in de buurt of het <a href="/bezorggebied/">volledige overzicht van bezorggebieden</a>.</p>%s'
                 '</div></section>' % (esc(a["name"]), toc(near)))
 
@@ -597,7 +598,7 @@ def overview_page():
         h1="Bezorggebied: lachgas in heel Amsterdam en de regio",
         lead="LachGasAdam247 bezorgt lachgas tanks in alle zeven stadsdelen van Amsterdam plus Weesp, en in de omliggende gemeenten. Kies hieronder je stadsdeel of plaats voor de bezorginformatie, wijken en veelgestelde vragen. Twijfel je? Stuur je postcode via WhatsApp, dan bevestigen we direct of we bij jou kunnen bezorgen.",
         crumbs=[("Home", "/"), ("Bezorggebied", None)],
-        priority="0.9", changefreq="weekly",
+        priority="0.9", changefreq="weekly", auto_toc=True,
         faq=[
             ("Bezorgen jullie in heel Amsterdam?",
              "Ja. Wij bezorgen in alle stadsdelen: Centrum, Noord, Zuid, Oost, West, Nieuw-West en Zuidoost, plus Weesp. In Amsterdam zijn we doorgaans binnen 20 tot 30 minuten ter plekke."),
@@ -624,11 +625,11 @@ def overview_page():
                                AREAS[s]["lead"].split(". ")[0] + ".") for s, n in REGIO])
     body = [
         hero(page, "Bezorggebied · 24/7", ["Alle stadsdelen van Amsterdam", "Regio in overleg", "Doorgaans 20 tot 30 minuten in Amsterdam", "Aankomsttijd vooraf bevestigd"]),
-        '<section class="section" aria-labelledby="h-stads"><div class="wrap"><h2 id="h-stads">Stadsdelen van Amsterdam</h2>'
+        '<section class="section" aria-labelledby="h-stads"><div class="wrap"><h2 id="h-stads" data-nav="Stadsdelen">Stadsdelen van Amsterdam</h2>'
         '<p class="intro">Amsterdam (020) bestaat uit zeven stadsdelen, aangevuld met Weesp. In elk stadsdeel bezorgen wij lachgas, dag en nacht. Klik op je stadsdeel voor de wijken, bezorgtips en veelgestelde vragen.</p>%s</div></section>' % stads_cards,
-        '<section class="section alt" aria-labelledby="h-regio"><div class="wrap"><h2 id="h-regio">Regio rond Amsterdam</h2>'
+        '<section class="section alt" aria-labelledby="h-regio"><div class="wrap"><h2 id="h-regio" data-nav="Regio">Regio rond Amsterdam</h2>'
         '<p class="intro">Buiten Amsterdam bezorgen we in overleg. Omdat de afstand groter is, plannen we deze leveringen vooraf en bevestigen we de verwachte aankomsttijd voordat we vertrekken.</p>%s</div></section>' % regio_cards,
-        '<section class="section" aria-labelledby="h-tijd"><div class="wrap prose"><h2 id="h-tijd">Levertijden per gebied</h2>'
+        '<section class="section" aria-labelledby="h-tijd"><div class="wrap prose"><h2 id="h-tijd" data-nav="Levertijden">Levertijden per gebied</h2>'
         '<p>De genoemde tijden zijn indicaties vanaf het moment dat je bestelling is bevestigd. Drukte, evenementen en het tijdstip kunnen de rit langer maken; we laten je altijd vooraf weten wanneer je ons kunt verwachten.</p>'
         '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Gebied</th><th>Indicatie levertijd</th></tr></thead><tbody>'
         '<tr><td><strong>Amsterdam Centrum, West, Zuid, Oost</strong></td><td>20 tot 30 minuten</td></tr>'

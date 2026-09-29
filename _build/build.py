@@ -60,6 +60,8 @@ def main():
         "Bestellen via WhatsApp of telefoon (%s), 24/7 bereikbaar, doorgaans bezorgd in 20 tot 30 minuten, "
         "prijs vooraf bevestigd. Uitsluitend voor volwassenen (18+)." % common.PHONE_DISPLAY,
         "",
+        "Volledige tekst van alle pagina's: %s/llms-full.txt" % common.SITE,
+        "",
         "## Belangrijkste pagina's",
         "- [Homepage: lachgas Amsterdam bestellen](%s/): bestellen, bezorgen, stadsdelen, regio, 24/7, prijs, veelgestelde vragen" % common.SITE,
         "- [Bezorggebied](%s/bezorggebied/): overzicht van alle stadsdelen en plaatsen in de regio" % common.SITE,
@@ -88,6 +90,23 @@ def main():
     lines += ["", "## Contact", "- Telefoon en WhatsApp: %s" % common.PHONE_DISPLAY, "- E-mail: %s" % common.EMAIL,
               "- Bereikbaar: 24/7", ""]
     write("/llms.txt", "\n".join(lines))
+
+    # llms-full.txt: volledige tekst van alle indexeerbare pagina's voor AI-crawlers
+    import re as _re
+    full = ["# LachGasAdam247 - volledige inhoud", "", "Telefoon en WhatsApp: %s | E-mail: %s | 24/7 bereikbaar" % (common.PHONE_DISPLAY, common.EMAIL), ""]
+    for page in pages:
+        if page.get("sitemap", True) is False or "noindex" in page.get("robots", ""):
+            continue
+        body = _re.sub(r"<script.*?</script>", "", common.page_body(page), flags=_re.S)
+        body = _re.sub(r"</(p|li|h1|h2|h3|dd|dt|tr|div|section|article)>", "\n", body)
+        text = _re.sub(r"[ \t]+", " ", common.strip_tags(body))
+        text = _re.sub(r"\n\s*\n+", "\n", text).strip()
+        full += ["---", "", "## " + page["title"], "URL: " + common.SITE + page["path"], "", text, ""]
+    write("/llms-full.txt", "\n".join(full))
+
+    # IndexNow-sleutel (Bing, Yandex, Naver): submit via https://www.bing.com/indexnow
+    key = "a1f3c9e4b7d2468f9c0e5a7b3d1f6e8c"
+    write("/%s.txt" % key, key)
 
     print("%d pagina's gegenereerd" % len(pages))
 

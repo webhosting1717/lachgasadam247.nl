@@ -5,6 +5,8 @@ Gebruik: python3 _build/build.py  (vanuit de root van de repository)
 """
 import html
 import json
+import os
+import re
 
 SITE = "https://lachgasadam247.nl"
 BRAND = "LachGasAdam247"
@@ -88,6 +90,7 @@ def business_node():
         "email": EMAIL,
         "image": OG_IMAGE,
         "logo": {"@type": "ImageObject", "url": SITE + "/images/icon-512.png", "width": 512, "height": 512},
+        "sameAs": ["https://wa.me/" + WA_NUMBER],
         "priceRange": "€€",
         "currenciesAccepted": "EUR",
         "address": {"@type": "PostalAddress", "addressLocality": "Amsterdam",
@@ -177,6 +180,65 @@ def jsonld(page):
 # ---------------------------------------------------------------------------
 # HTML helpers
 # ---------------------------------------------------------------------------
+_I = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">%s</svg>'
+ICONS = {
+    "chat": _I % '<path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.4A8 8 0 1 1 21 12z"/>',
+    "clock": _I % '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    "check": _I % '<path d="M20 6 9 17l-5-5"/>',
+    "pin": _I % '<path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+    "bolt": _I % '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8z"/>',
+    "home": _I % '<path d="M3 11 12 3l9 8"/><path d="M5 10v10h14V10"/>',
+    "tag": _I % '<path d="M20 12 12 20 3 11V3h8l9 9z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+    "users": _I % '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M17.5 13.5a6.5 6.5 0 0 1 4 6.5"/>',
+    "noform": _I % '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="m8 12 8 0"/><path d="m8 16 5 0"/><path d="M3 3l18 18"/>',
+    "shield": _I % '<path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3z"/><path d="m9 12 2 2 4-4"/>',
+    "moon": _I % '<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+}
+
+
+def slugify(text):
+    t = strip_tags(text).lower()
+    t = re.sub(r"[^a-z0-9]+", "-", t).strip("-")
+    return t[:60] or "sectie"
+
+
+def auto_toc(body, exclude=("h-cta",)):
+    """Bouw een 'Op deze pagina'-navigatie uit de h2-koppen met een id."""
+    items = []
+    for m in re.finditer(r'<h2 id="([^"]+)"(?: data-nav="([^"]*)")?>(.*?)</h2>', body):
+        if m.group(1) in exclude or m.group(1) == "h1":
+            continue
+        items.append((m.group(1), m.group(2) or strip_tags(m.group(3))))
+    if len(items) < 3:
+        return ""
+    return ('<nav class="jump pagetoc" aria-label="Op deze pagina"><div class="wrap"><ul>'
+            '<li class="lbl">Op deze pagina:</li>'
+            + "".join('<li><a href="#%s">%s</a></li>' % (i, esc(t)) for i, t in items)
+            + "</ul></div></nav>")
+
+
+def add_h2_ids(body):
+    used = set()
+    def f(m):
+        sl = slugify(m.group(1)); base = sl; n = 2
+        while sl in used:
+            sl = "%s-%d" % (base, n); n += 1
+        used.add(sl)
+        return '<h2 id="%s">%s</h2>' % (sl, m.group(1))
+    return re.sub(r"<h2>(.*?)</h2>", f, body)
+
+
+def icon_cards(items):
+    """items: list of (icon, title, text)"""
+    return ('<div class="cards">' + "".join(
+        '<div class="card"><h3>%s%s</h3><p>%s</p></div>' % (ICONS[i], esc(t), x) for i, t, x in items) + "</div>")
+
+
+def chips(items, label=None):
+    return ('<ul class="chips">' + ('<li class="lbl">%s</li>' % esc(label) if label else "")
+            + "".join('<li><a href="%s">%s</a></li>' % (h, esc(t)) for h, t in items) + "</ul>")
+
+
 
 def crumbs_html(crumbs):
     out = ['<nav class="crumbs" aria-label="Kruimelpad"><ol>']
@@ -191,11 +253,11 @@ def crumbs_html(crumbs):
 
 def faq_html(faq, title="Veelgestelde vragen", intro=None, hid="h-faq"):
     parts = ['<section class="section alt" id="faq" aria-labelledby="%s"><div class="wrap prose">' % hid,
-             '<h2 id="%s">%s</h2>' % (hid, esc(title))]
+             '<h2 id="%s" data-nav="Veelgestelde vragen">%s</h2>' % (hid, esc(title))]
     if intro:
         parts.append('<p class="intro">%s</p>' % intro)
     for q, a in faq:
-        parts.append('<div class="qa"><h3>%s</h3><p>%s</p></div>' % (esc(q), a))
+        parts.append('<div class="qa"><h3>%s</h3><p>%s</p></div>' % (q, a))
     parts.append("</div></section>")
     return "".join(parts)
 
@@ -303,6 +365,20 @@ def footer_html():
 WA_SVG = ('<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.372a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.883 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>')
 
 
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "site.css"), encoding="utf-8") as _f:
+    CSS = "".join(line.strip() + ("\n" if line.strip().endswith("}") else "") for line in _f if line.strip()).strip()
+
+
+def page_body(page):
+    body = page["body"]
+    if page.get("auto_toc"):
+        cut = body.find("</section>")
+        if cut > 0:
+            cut += len("</section>")
+            body = body[:cut] + auto_toc(body) + body[cut:]
+    return body
+
+
 def render(page):
     """Render a full HTML document for a page dict."""
     path = page["path"]
@@ -364,7 +440,8 @@ def render(page):
         '<link rel="manifest" href="/manifest.webmanifest">',
         '<link rel="sitemap" type="application/xml" href="/sitemap.xml">',
         '<link rel="preload" href="/fonts/bebas-neue-latin.woff2" as="font" type="font/woff2" crossorigin>',
-        '<link rel="stylesheet" href="/assets/site.css?v=%s">' % CSS_VERSION,
+        '<meta name="apple-mobile-web-app-title" content="%s">' % BRAND,
+        "<style>%s</style>" % CSS,
         '<script type="application/ld+json">%s</script>' % jsonld(page),
         "</head>",
         "<body>",
@@ -375,7 +452,7 @@ def render(page):
         '<a class="btn btn-call btn-sm hide-sm" href="tel:%s">Bel %s</a></div></div></header>' % (WA_DEFAULT, PHONE_TEL, PHONE_DISPLAY),
         nav_html(path),
         '<main id="main">',
-        page["body"],
+        page_body(page),
         "</main>",
         footer_html(),
         '<div class="bar" role="region" aria-label="Snel bestellen"><a class="btn btn-wa" href="%s" target="_blank" rel="noopener">WhatsApp</a>'
@@ -387,10 +464,18 @@ def render(page):
     return "\n".join(head) + "\n"
 
 
-def doc_page(page, body_inner):
+def doc_page(page, body_inner, meta=None):
     """Wrap an article-like body (h1 + prose) in the standard document layout."""
-    return ('<article class="wrap prose doc">%s<h1>%s</h1><p class="lead">%s</p>%s</article>'
-            % (crumbs_html(page["crumbs"]), esc(page["h1"]), page["lead"], body_inner))
+    body_inner = add_h2_ids(body_inner)
+    toc_html = ""
+    if page.get("auto_toc"):
+        items = [(m.group(1), strip_tags(m.group(2))) for m in re.finditer(r'<h2 id="([^"]+)">(.*?)</h2>', body_inner)]
+        if len(items) >= 3:
+            toc_html = ('<nav class="doc-toc" aria-label="Op deze pagina"><p class="lbl">Op deze pagina</p><ol>'
+                        + "".join('<li><a href="#%s">%s</a></li>' % (i, esc(t)) for i, t in items) + "</ol></nav>")
+    return ('<article class="wrap prose doc">%s<h1>%s</h1>%s<p class="lead">%s</p>%s%s</article>'
+            % (crumbs_html(page["crumbs"]), esc(page["h1"]), ('<p class="meta">%s</p>' % meta) if meta else "",
+               page["lead"], toc_html, body_inner))
 
 
 def hero(page, eyebrow, points=None, cta=True):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Homepage."""
 from common import (SITE, BUSINESS_ID, EMAIL, PHONE_DISPLAY, PHONE_TEL, WA_DEFAULT, WA_ORDER, STADSDELEN, REGIO, TANKS,
-                    esc, checks, steps, facts, faq_html, cta_block, toc, phone_link, wa_link, wa)
+                    esc, checks, steps, facts, faq_html, cta_block, toc, phone_link, wa_link, wa, chips, icon_cards, ICONS)
 from content_areas import AREAS
 
 FAQ = [
@@ -119,7 +119,14 @@ def home_page():
         '<ul class="points"><li>24/7 beschikbaar, ook &rsquo;s nachts en in het weekend</li><li>Doorgaans bezorgd binnen 20 tot 30 minuten</li><li>Duidelijke prijs en levermoment vooraf</li><li>Alle stadsdelen van Amsterdam en de regio</li></ul>'
         '<div class="cta-row"><a class="btn btn-wa" href="%s" target="_blank" rel="noopener">WhatsApp: lachgas bestellen</a><a class="btn btn-call" href="tel:%s">Bel %s</a></div>'
         '<p class="fine">Uitsluitend voor volwassenen (18+). Gebruik lachgas altijd verantwoord en in overeenstemming met de geldende wet- en regelgeving.</p>'
-        '</div></div></section>' % (esc(page["h1"]), page["lead"], WA_ORDER, PHONE_TEL, PHONE_DISPLAY),
+        '%s</div>'
+        '<div class="strip">'
+        '<div>%s<div><strong>1. Stuur je adres</strong><p>Via WhatsApp of telefoon, met het gewenste aantal.</p></div></div>'
+        '<div>%s<div><strong>2. Bevestiging</strong><p>Je hoort direct het levermoment en de prijs.</p></div></div>'
+        '<div>%s<div><strong>3. Bezorgd</strong><p>Doorgaans binnen 20 tot 30 minuten aan je deur.</p></div></div>'
+        '</div></div></section>' % (esc(page["h1"]), page["lead"], WA_ORDER, PHONE_TEL, PHONE_DISPLAY,
+                                    chips([("/bezorggebied/%s/" % s, n) for s, n in STADSDELEN] + [("/bezorggebied/", "Regio en meer")], "Direct naar jouw stadsdeel"),
+                                    ICONS["chat"], ICONS["check"], ICONS["home"]),
 
         # Inhoud
         '<section class="section" id="inhoud" aria-labelledby="h-inhoud"><div class="wrap"><h2 id="h-inhoud">Inhoud: alles over lachgas Amsterdam</h2>'
@@ -221,14 +228,15 @@ def home_page():
 
         # Waarom
         '<section class="section" id="waarom-lachgasadam247" aria-labelledby="h-waarom"><div class="wrap"><h2 id="h-waarom">Waarom lachgas bestellen bij LachGasAdam247</h2>'
-        '<p class="intro">Lachgas Amsterdam bezorgen doen wij anders: minder gedoe, meer duidelijkheid bij elke bestelling.</p><div class="cards">'
-        '<div class="card"><h3>24/7 bereikbaar</h3><p>Dag en nacht, doordeweeks en in het weekend: je kunt ons altijd bereiken via WhatsApp of telefoon.</p></div>'
-        '<div class="card"><h3>Snel ter plekke</h3><p>Doorgaans bezorgen wij binnen 20 tot 30 minuten en we laten altijd vooraf weten wanneer je ons kunt verwachten.</p></div>'
-        '<div class="card"><h3>Duidelijke communicatie</h3><p>Levermoment en prijs staan vooraf vast. Geen kosten achteraf, geen vage beloftes.</p></div>'
-        '<div class="card"><h3>Gefocust op Amsterdam</h3><p>Amsterdam en omstreken zijn onze thuisbasis. We plannen routes op de stad en houden rekening met drukte en afsluitingen.</p></div>'
-        '<div class="card"><h3>Particulier en zakelijk</h3><p>Van een bestelling thuis tot horeca en evenementen: het bestelproces is hetzelfde en we denken graag mee.</p></div>'
-        '<div class="card"><h3>Geen formulier of account</h3><p>Een bericht met je adres en aantal is genoeg. Geen webshop, geen inlog, geen wachtrij.</p></div>'
-        '</div><p style="margin-top:1.25rem"><a href="/over-ons/">Meer over LachGasAdam247 &rarr;</a></p></div></section>',
+        '<p class="intro">Lachgas Amsterdam bezorgen doen wij anders: minder gedoe, meer duidelijkheid bij elke bestelling.</p>%s'
+        '<p style="margin-top:1.25rem"><a href="/over-ons/">Meer over LachGasAdam247 &rarr;</a></p></div></section>' % icon_cards([
+            ("moon", "24/7 bereikbaar", "Dag en nacht, doordeweeks en in het weekend: je kunt ons altijd bereiken via WhatsApp of telefoon."),
+            ("bolt", "Snel ter plekke", "Doorgaans bezorgen wij binnen 20 tot 30 minuten en we laten altijd vooraf weten wanneer je ons kunt verwachten."),
+            ("tag", "Duidelijke prijs vooraf", "Levermoment en prijs staan vooraf vast. Geen kosten achteraf, geen vage beloftes."),
+            ("pin", "Gefocust op Amsterdam", "Amsterdam en omstreken zijn onze thuisbasis. We plannen routes op de stad en houden rekening met drukte en afsluitingen."),
+            ("users", "Particulier en zakelijk", "Van een bestelling thuis tot horeca en evenementen: het bestelproces is hetzelfde en we denken graag mee."),
+            ("noform", "Geen formulier of account", "Een bericht met je adres en aantal is genoeg. Geen webshop, geen inlog, geen wachtrij."),
+        ]),
 
         # Waar op letten
         '<section class="section alt" id="waar-op-letten" aria-labelledby="h-letten"><div class="wrap prose"><h2 id="h-letten">Waar let je op bij een lachgas bezorgdienst in Amsterdam?</h2>'

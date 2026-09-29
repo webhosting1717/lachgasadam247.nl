@@ -130,6 +130,7 @@ def product_page(slug):
         faq=p["faq"],
         priority="0.8", changefreq="weekly",
         speakable=["#h1", ".lead"],
+        auto_toc=True,
     )
     page["schema"] = [{
         "@type": "Service",
@@ -149,19 +150,19 @@ def product_page(slug):
               "Prijs en levermoment vooraf bevestigd", "Uitsluitend voor volwassenen (18+)"]
     body = [
         hero(page, "%s · 24/7 bezorgd" % p["name"], points),
-        '<section class="section" aria-labelledby="h-over"><div class="wrap prose"><h2 id="h-over">Over de %s</h2>%s'
+        '<section class="section" aria-labelledby="h-over"><div class="wrap prose"><h2 id="h-over" data-nav="Over de tank">Over de %s</h2>%s'
         '<h3>Specificaties</h3>%s</div></section>' % (esc(p["name"].lower()), "".join("<p>%s</p>" % x for x in p["intro"]), facts(p["specs"])),
-        '<section class="section alt" aria-labelledby="h-wie"><div class="wrap prose"><h2 id="h-wie">Voor wie is de %s tank?</h2>%s'
+        '<section class="section alt" aria-labelledby="h-wie"><div class="wrap prose"><h2 id="h-wie" data-nav="Voor wie">Voor wie is de %s tank?</h2>%s'
         '<h3>Andere maten</h3><p>Past een andere maat beter bij jouw gelegenheid? Bekijk het <a href="/lachgas-tanks/">overzicht van alle lachgas tanks</a>.</p>%s</div></section>'
         % (esc(p["short"]), checks(p["voor_wie"]), toc(others)),
-        '<section class="section" aria-labelledby="h-bestel"><div class="wrap prose"><h2 id="h-bestel">Zo bestel je de %s tank</h2>%s</div></section>'
+        '<section class="section" aria-labelledby="h-bestel"><div class="wrap prose"><h2 id="h-bestel" data-nav="Bestellen">Zo bestel je de %s tank</h2>%s</div></section>'
         % (esc(p["short"]), steps([
             "<strong>Stuur een WhatsApp-bericht of bel %s.</strong> Geef je adres, het aantal tanks en het gewenste moment door." % phone_link(),
             "<strong>Ontvang de bevestiging.</strong> Wij bevestigen de maat, het aantal, het levermoment en de prijs.",
             "<strong>Wij bezorgen.</strong> Doorgaans binnen 20 tot 30 minuten in Amsterdam; in de regio en bij een 10 kg tank plannen we het moment vooraf.",
             "<strong>Veilige overdracht.</strong> Bewaar de tank rechtop, koel en buiten bereik van kinderen. Lees onze <a href=\"/lachgas-informatie/veilig-gebruik/\">tips voor veilig gebruik</a>.",
         ])),
-        '<section class="section alt" aria-labelledby="h-veilig"><div class="wrap prose"><h2 id="h-veilig">Veilig omgaan met een lachgas tank</h2>'
+        '<section class="section alt" aria-labelledby="h-veilig"><div class="wrap prose"><h2 id="h-veilig" data-nav="Veiligheid">Veilig omgaan met een lachgas tank</h2>'
         '<p>Een lachgas tank staat onder hoge druk. Adem nooit rechtstreeks uit de tank, gebruik lachgas niet voordat je gaat rijden of fietsen, combineer het niet met alcohol of andere drugs en houd rekening met de risico&rsquo;s bij veelvuldig gebruik, zoals een <a href="/lachgas-informatie/lachgas-en-vitamine-b12/">vitamine B12-tekort</a>. Lachgas is uitsluitend bestemd voor volwassenen (18+).</p>'
         '<div class="callout"><p><strong>Acute klachten of een noodgeval?</strong> Bel direct 112. Onafhankelijke informatie vind je bij <a href="https://www.drugsinfo.nl" target="_blank" rel="noopener nofollow">Drugsinfo van het Trimbos-instituut</a>.</p></div></div></section>',
         faq_html(p["faq"], "Veelgestelde vragen over de %s tank" % p["short"]),
@@ -180,7 +181,7 @@ def overview_page():
         h1="Lachgas tanks: maten en hoeveelheden",
         lead="LachGasAdam247 levert lachgas tanks in drie maten: 2 kg, 4 kg en 10 kg. Welke maat het beste past, hangt af van je gelegenheid en het aantal mensen. Hieronder vergelijk je de maten. Welke maten en aantallen op dit moment beschikbaar zijn, bevestigen we bij je bestelling.",
         crumbs=[("Home", "/"), ("Lachgas tanks", None)],
-        priority="0.9", changefreq="weekly",
+        priority="0.9", changefreq="weekly", auto_toc=True,
         faq=[
             ("Welke maat lachgas tank moet ik kiezen?",
              "Voor een kleine groep op één avond is een 2 kg tank meestal voldoende. Voor een huisfeest of een lange avond met tien tot twintig mensen kies je een 4 kg tank. Voor grote feesten, evenementen en horeca is de 10 kg tank het meest praktisch. Twijfel je? Stuur ons een bericht, dan adviseren we je."),
@@ -207,9 +208,9 @@ def overview_page():
         % (s, esc(PRODUCTS[s]["name"]), PRODUCTS[s]["lead"].split(". ")[0] + ".", s, PRODUCTS[s]["short"]) for s, _ in TANKS) + "</div>")
     body = [
         hero(page, "Lachgas tanks · 24/7 bezorgd", ["Drie maten: 2 kg, 4 kg en 10 kg", "Doorgaans bezorgd binnen 20 tot 30 minuten", "Prijs vooraf bevestigd", "Uitsluitend voor volwassenen (18+)"]),
-        '<section class="section" aria-labelledby="h-maten"><div class="wrap"><h2 id="h-maten">Onze lachgas tanks</h2>'
+        '<section class="section" aria-labelledby="h-maten"><div class="wrap"><h2 id="h-maten" data-nav="Maten">Onze lachgas tanks</h2>'
         '<p class="intro">Alle tanks worden verzegeld en rechtop geleverd. Kies de maat die bij jouw gelegenheid past.</p>%s</div></section>' % cards,
-        '<section class="section alt" aria-labelledby="h-vgl"><div class="wrap prose"><h2 id="h-vgl">Vergelijk de maten</h2>'
+        '<section class="section alt" aria-labelledby="h-vgl"><div class="wrap prose"><h2 id="h-vgl" data-nav="Vergelijk">Vergelijk de maten</h2>'
         '<div class="tbl-wrap"><table class="tbl"><thead><tr><th>Maat</th><th>Inhoud</th><th>Geschikt voor</th><th>Levering</th></tr></thead><tbody>'
         '<tr><td><strong><a href="/lachgas-tanks/2kg/">2 kg</a></strong></td><td>Circa 2 kg N<sub>2</sub>O</td><td>Kleine groep, thuis, verjaardag of borrel</td><td>Doorgaans 20 tot 30 minuten</td></tr>'
         '<tr><td><strong><a href="/lachgas-tanks/4kg/">4 kg</a></strong></td><td>Circa 4 kg N<sub>2</sub>O</td><td>Huisfeest, 10 tot 20 personen, lange avond</td><td>Doorgaans 20 tot 30 minuten</td></tr>'
@@ -217,7 +218,7 @@ def overview_page():
         '</tbody></table></div>'
         '<h3>Hoeveel lachgas heb je nodig?</h3><p>Bestel niet meer dan je nodig hebt. Geef bij je bestelling aan waarvoor je de tank wilt gebruiken en met hoeveel mensen, dan adviseren wij over de maat. Bestel je grote aantallen of op een specifiek moment, bijvoorbeeld voor een evenement? Neem dan vooraf contact op, zodat we de bezorging kunnen plannen. Kijk ook op de pagina voor <a href="/zakelijk/">horeca, feesten en evenementen</a>.</p>'
         '</div></section>',
-        '<section class="section" aria-labelledby="h-bewaar"><div class="wrap prose"><h2 id="h-bewaar">Veilig bewaren en vervoeren</h2>%s'
+        '<section class="section" aria-labelledby="h-bewaar"><div class="wrap prose"><h2 id="h-bewaar" data-nav="Bewaren">Veilig bewaren en vervoeren</h2>%s'
         '<p>Lees meer over <a href="/lachgas-informatie/lachgas-tank-bewaren-en-vervoeren/">een lachgas tank veilig bewaren en vervoeren</a> en over <a href="/lachgas-informatie/veilig-gebruik/">veilig en verantwoord gebruik</a>.</p></div></section>'
         % checks([
             "Bewaar een tank rechtop en goed vastgezet, zodat hij niet kan omvallen.",

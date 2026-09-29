@@ -250,6 +250,7 @@ def article_page(slug):
         og_type="article",
         priority="0.6", changefreq="monthly",
         speakable=["#h1", ".lead"],
+        auto_toc=True,
     )
     page["schema"] = [{
         "@type": "Article",
@@ -267,9 +268,14 @@ def article_page(slug):
         "about": {"@type": "Thing", "name": "Lachgas (distikstofmonoxide, N2O)"},
     }]
     others = [("/lachgas-informatie/%s/" % s, ARTICLES[s]["h1"]) for s in ORDER if s != slug]
+    sources = ('<aside class="sources"><h2>Bronnen en verder lezen</h2><ul>'
+               '<li><a href="https://www.drugsinfo.nl/lachgas" target="_blank" rel="noopener nofollow">Drugsinfo (Trimbos-instituut) over lachgas</a></li>'
+               '<li><a href="https://www.rijksoverheid.nl/onderwerpen/drugs/lachgas" target="_blank" rel="noopener nofollow">Rijksoverheid: lachgas en de Opiumwet</a></li>'
+               '<li><a href="/over-ons/">Over LachGasAdam247 en ons verantwoorde beleid</a></li></ul></aside>')
     body = [
         doc_page(page, a["body"] +
-                 '<h2>Meer lezen over lachgas</h2><p>Bekijk het <a href="/lachgas-informatie/">overzicht van alle informatiepagina&rsquo;s</a> of lees verder:</p>' + toc(others)),
+                 '<h2>Meer lezen over lachgas</h2><p>Bekijk het <a href="/lachgas-informatie/">overzicht van alle informatiepagina&rsquo;s</a> of lees verder:</p>' + toc(others) + sources,
+                 meta="Informatie van LachGasAdam247 &middot; Laatst bijgewerkt op 29 september 2026 &middot; Leestijd circa 4 minuten"),
         faq_html(a["faq"], "Veelgestelde vragen"),
         cta_block(),
     ]

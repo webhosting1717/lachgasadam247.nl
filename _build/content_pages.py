@@ -13,7 +13,7 @@ def zakelijk_page():
         h1="Lachgas voor feesten, evenementen en horeca in Amsterdam",
         lead="LachGasAdam247 levert aan particulieren én zakelijke afnemers. Of je nu een verjaardag thuis organiseert, een borrel op kantoor, een festival-afterparty, een evenement of een horecazaak runt: wij leveren de juiste hoeveelheid op het juiste moment. Grotere aantallen en 10 kg tanks plannen we vooraf met je in.",
         crumbs=[("Home", "/"), ("Zakelijk en evenementen", None)],
-        priority="0.8", changefreq="monthly",
+        priority="0.8", changefreq="monthly", auto_toc=True,
         faq=[
             ("Leveren jullie ook zakelijk, bijvoorbeeld aan horeca en evenementen?",
              "Ja. We leveren zowel aan particulieren als aan zakelijke afnemers, zoals horeca, clubs, eventlocaties, festivals en bedrijven. Stuur je bedrijfsnaam, het gewenste aantal en het moment via WhatsApp mee voor een passende afspraak."),
@@ -40,7 +40,7 @@ def zakelijk_page():
     }]
     body = [
         hero(page, "Zakelijk · feesten · horeca", ["Grotere aantallen en 10 kg tanks", "Levering op afspraak, ook 's nachts", "Vaste afspraken voor horeca en clubs", "Prijs vooraf bevestigd"]),
-        '<section class="section" aria-labelledby="h-part"><div class="wrap prose"><h2 id="h-part">Particulier: thuis, feest of borrel</h2>'
+        '<section class="section" aria-labelledby="h-part"><div class="wrap prose"><h2 id="h-part" data-nav="Particulier">Particulier: thuis, feest of borrel</h2>'
         '<p>Voor een gewone bestelling is een WhatsApp-bericht voldoende; wij bezorgen doorgaans binnen 20 tot 30 minuten in heel Amsterdam. Organiseer je een verjaardag, een housewarming of een borrel met een grotere groep? Kies dan een <a href="/lachgas-tanks/4kg/">4 kg tank</a> of bestel meerdere tanks tegelijk. Voor grotere hoeveelheden of een levering op een specifiek tijdstip raden we aan vooraf contact op te nemen, zodat we de bezorging goed kunnen plannen.</p>'
         '<h3>Tips voor een feest thuis</h3>%s</div></section>' % checks([
             "Bestel op tijd, zeker in het weekend, op Koningsdag en tijdens grote evenementen.",
@@ -48,7 +48,7 @@ def zakelijk_page():
             "Zet de tank op een vaste, geventileerde plek waar hij niet kan omvallen en waar gasten er niet mee gaan slepen.",
             "Spreek af dat niemand daarna nog rijdt of fietst. Lees onze tips over <a href=\"/lachgas-informatie/veilig-gebruik/\">veilig en verantwoord gebruik</a>.",
         ]),
-        '<section class="section alt" aria-labelledby="h-zak"><div class="wrap prose"><h2 id="h-zak">Zakelijk: horeca, clubs, evenementen en bedrijven</h2>'
+        '<section class="section alt" aria-labelledby="h-zak"><div class="wrap prose"><h2 id="h-zak" data-nav="Zakelijk">Zakelijk: horeca, clubs, evenementen en bedrijven</h2>'
         '<p>Bestel je zakelijk, geef dan je bedrijfsnaam, het leveradres, een aanspreekpunt en het gewenste aantal door. Bij evenementen en horeca is een goede afspraak over het moment en de plek van overdracht extra belangrijk, bijvoorbeeld bij een laad- en losplek, een personeelsingang of de receptie. We stemmen dat graag met je af en plannen bij grotere hoeveelheden de levering vooraf.</p>'
         '<h3>Voor wie</h3>%s'
         '<h3>Wat wij bieden</h3>%s</div></section>' % (
@@ -64,7 +64,7 @@ def zakelijk_page():
                 "<strong>Eén aanspreekpunt</strong> via WhatsApp of telefoon, met een duidelijke bevestiging van aantal, moment en prijs.",
                 "<strong>Kennis van de stad</strong>: we houden rekening met afsluitingen, evenementen en laad- en losplekken.",
             ])),
-        '<section class="section" aria-labelledby="h-druk"><div class="wrap prose"><h2 id="h-druk">Drukke momenten in Amsterdam</h2>'
+        '<section class="section" aria-labelledby="h-druk"><div class="wrap prose"><h2 id="h-druk" data-nav="Drukke momenten">Drukke momenten in Amsterdam</h2>'
         '<p>Op deze dagen is de stad extra druk en zijn straten afgesloten. Wij zijn dan gewoon bereikbaar, maar bestel eerder en geef je adres volledig door.</p>%s'
         '<p>Op al deze dagen bevestigen we de verwachte aankomsttijd voordat we vertrekken, zodat je weet waar je aan toe bent. Lees ook over <a href="/lachgas-24-7-amsterdam/">lachgas 24/7 en &rsquo;s nachts bestellen</a>.</p></div></section>' % checks([
             "<strong>Koningsdag (27 april).</strong> De hele stad is op de been en veel straten en grachten zijn afgesloten.",
@@ -73,7 +73,7 @@ def zakelijk_page():
             "<strong>Oud en Nieuw.</strong> Straten vol, vuurwerkdrukte en langere ritten.",
             "<strong>Evenementen in de Johan Cruijff ArenA, de Ziggo Dome en de RAI.</strong> Rond deze locaties in Zuidoost en Zuid is het drukker op de weg.",
         ]),
-        '<section class="section alt" aria-labelledby="h-zo"><div class="wrap prose"><h2 id="h-zo">Zo werkt een zakelijke bestelling</h2>%s</div></section>' % steps([
+        '<section class="section alt" aria-labelledby="h-zo"><div class="wrap prose"><h2 id="h-zo" data-nav="Zo werkt het">Zo werkt een zakelijke bestelling</h2>%s</div></section>' % steps([
             "<strong>Stuur je aanvraag via WhatsApp of bel %s.</strong> Vermeld je bedrijfsnaam, het leveradres, het gewenste aantal en het moment." % phone_link(),
             "<strong>Wij bevestigen.</strong> Je ontvangt een bevestiging met aantal, maat, levermoment, plek van overdracht en prijs.",
             "<strong>Levering op afspraak.</strong> Onze bezorger komt op het afgesproken moment naar de afgesproken plek en meldt zich bij je aanspreekpunt.",
@@ -95,7 +95,7 @@ def nacht_page():
         h1="Lachgas 24/7 en 's nachts bestellen in Amsterdam",
         lead="Amsterdam is een stad die nooit helemaal stilvalt, en onze bereikbaarheid ook niet. LachGasAdam247 is 24 uur per dag, 7 dagen per week bereikbaar via WhatsApp en telefoon. Ook 's avonds laat, 's nachts, in het weekend en op feestdagen bevestigen we je bestelling en bezorgen we doorgaans binnen 20 tot 30 minuten.",
         crumbs=[("Home", "/"), ("Lachgas 24/7", None)],
-        priority="0.8", changefreq="monthly",
+        priority="0.8", changefreq="monthly", auto_toc=True,
         faq=[
             ("Kan ik lachgas 's nachts bestellen in Amsterdam?",
              "Ja. LachGasAdam247 is 24 uur per dag bereikbaar via WhatsApp en telefoon, ook 's nachts, in het weekend en op feestdagen. Stuur je adres en het gewenste aantal, dan bevestigen we het levermoment en de prijs."),
@@ -122,20 +122,20 @@ def nacht_page():
     }]
     body = [
         hero(page, "24/7 · ook 's nachts", ["Elke dag, elk uur bereikbaar", "Ook weekend en feestdagen", "Doorgaans 20 tot 30 minuten", "Prijs en levermoment vooraf"]),
-        '<section class="section" aria-labelledby="h-nacht"><div class="wrap prose"><h2 id="h-nacht">Zo werkt een bestelling &rsquo;s nachts</h2>%s'
+        '<section class="section" aria-labelledby="h-nacht"><div class="wrap prose"><h2 id="h-nacht" data-nav="Bestellen ’s nachts">Zo werkt een bestelling &rsquo;s nachts</h2>%s'
         '<p>Bestel je &rsquo;s nachts, geef je adres dan extra duidelijk door en vermeld de verdieping en de juiste bel, zodat er geen tijd verloren gaat. Houd je telefoon bij de hand: onze bezorger stuurt een bericht of belt zodra hij in de straat is.</p></div></section>' % steps([
             "<strong>Stuur een WhatsApp-bericht</strong> met je volledige adres, de verdieping en de juiste bel, of bel %s." % phone_link(),
             "<strong>Je ontvangt een bevestiging</strong> met levermoment en prijs.",
             "<strong>Houd je telefoon bij de hand</strong>, zodat onze bezorger je kan bereiken zodra hij in de straat is.",
             "<strong>Wij bezorgen</strong> op het afgesproken adres en zorgen voor een veilige overdracht.",
         ]),
-        '<section class="section alt" aria-labelledby="h-uit"><div class="wrap prose"><h2 id="h-uit">Ook in de uitgaanswijken van Amsterdam</h2>'
+        '<section class="section alt" aria-labelledby="h-uit"><div class="wrap prose"><h2 id="h-uit" data-nav="Uitgaanswijken">Ook in de uitgaanswijken van Amsterdam</h2>'
         '<p>Van het Leidseplein, het Rembrandtplein en de Wallen in het <a href="/bezorggebied/amsterdam-centrum/">centrum</a> tot <a href="/bezorggebied/amsterdam-zuid/">De Pijp</a>, de Javastraat in <a href="/bezorggebied/amsterdam-oost/">Oost</a>, de NDSM-werf in <a href="/bezorggebied/amsterdam-noord/">Noord</a>, de Foodhallen in <a href="/bezorggebied/amsterdam-west/">West</a> en de omgeving van de Ziggo Dome in <a href="/bezorggebied/amsterdam-zuidoost/">Zuidoost</a>: wij bezorgen &rsquo;s nachts op een adres in heel Amsterdam. Wij leveren bij woningen, appartementen, hotels en kantoren, niet op straat.</p>'
         '<h3>Weekend en feestdagen</h3>'
         '<p>In het weekend en op feestdagen is het drukker in de stad. Op Koningsdag, tijdens Pride, het Amsterdam Dance Event en met Oud en Nieuw zijn straten afgesloten en kan de rit langer duren. Wij zijn op al die dagen bereikbaar en bevestigen de verwachte aankomsttijd altijd voordat we vertrekken. Bestel op die dagen iets eerder.</p>'
         '<h3>Waarom &rsquo;s nachts vaak juist snel</h3>'
         '<p>&rsquo;s Nachts is het rustig op de ring en in de stad. Geen spits, geen laad- en losverkeer en minder afsluitingen. Daardoor zijn onze bezorgers tussen middernacht en de vroege ochtend vaak juist snel ter plekke, ook in stadsdelen die verder van het centrum liggen, zoals Noord, Nieuw-West en Zuidoost.</p></div></section>',
-        '<section class="section" aria-labelledby="h-ver"><div class="wrap prose"><h2 id="h-ver">Verantwoord blijven, ook &rsquo;s nachts</h2>'
+        '<section class="section" aria-labelledby="h-ver"><div class="wrap prose"><h2 id="h-ver" data-nav="Verantwoord">Verantwoord blijven, ook &rsquo;s nachts</h2>'
         '<p>Lachgas is uitsluitend bestemd voor volwassenen (18+). Gebruik het nooit voordat je gaat rijden of fietsen, combineer het niet met alcohol of andere drugs, ga zitten en zorg voor frisse lucht. Juist &rsquo;s nachts, na een avond uit, is de combinatie met alcohol een groot risico. Lees onze tips over <a href="/lachgas-informatie/veilig-gebruik/">veilig en verantwoord gebruik</a> en over <a href="/lachgas-informatie/lachgas-en-verkeer/">lachgas in het verkeer</a>.</p>'
         '<div class="callout"><p><strong>Acute klachten of een noodgeval?</strong> Bel direct 112.</p></div></div></section>',
         faq_html(page["faq"], "Veelgestelde vragen over 24/7 bestellen"),
